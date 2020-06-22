@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 //Spring Beans(Service,Repositories)
 @Service
 public class ProductService {
-//Lombok(librarie pt generari automate -> pt getteri si setteri,constructori)
+//Lombok(librarie pt generari automate -> pt getteri si setteri,constructori) ATTENTION import org.slf4j.Logger !!!!
     private final static Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 //    inversion of control (IoC)
     private final ProductRepository productRepository;
