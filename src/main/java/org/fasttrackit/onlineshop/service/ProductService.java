@@ -62,10 +62,15 @@ public class ProductService {
 
     public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
         if (request.getPartialName() != null && request.getMinimumQuantity() != null) {
+
             productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(), request.getMinimumQuantity(), pageable);
+
         } else if (request.getPartialName() != null) {
+
             return productRepository.findByNameContaining(request.getPartialName(), pageable);
+
         } else{ return productRepository.findAll(pageable); }
+
         return productRepository.findAll(pageable);
     }
 

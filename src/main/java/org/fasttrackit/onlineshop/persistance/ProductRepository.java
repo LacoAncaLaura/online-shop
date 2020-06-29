@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ProductRepository  extends JpaRepository <Product, Long> {
-//    Without "Containing" would be an exact match,and instead of find could also be get
+//    Without "Containing" would be an exact match,and instead of "find" could also be "get"
     Page<Product> findByNameContaining(String partialName , Pageable pageable);
     Page<Product> findByNameContainingAndQuantityGreaterThanEqual(String partialName , int minimumQuantity , Pageable pageable);
 
