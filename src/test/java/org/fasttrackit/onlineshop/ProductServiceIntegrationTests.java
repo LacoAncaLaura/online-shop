@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-
 import javax.validation.ConstraintViolationException;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -82,8 +79,8 @@ class ProductServiceIntegrationTests {
         Product product = createProduct();
         SaveProductRequest request = new SaveProductRequest();
         request.setName(product.getName() + "");
-        request.setPrice(product.getPrice() + 10);
-        request.setQuantity(product.getQuantity() + 10);
+        request.setPrice(product.getPrice());
+        request.setQuantity(product.getQuantity());
         Product updateProduct = productService.updateProduct(product.getId(), request);
         assertThat(updateProduct, notNullValue());
         assertThat(updateProduct.getId(), is(product.getId()));

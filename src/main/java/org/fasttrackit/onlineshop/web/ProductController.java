@@ -2,11 +2,15 @@ package org.fasttrackit.onlineshop.web;
 
 import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.service.ProductService;
+import org.fasttrackit.onlineshop.transfer.GetProductsRequest;
 import org.fasttrackit.onlineshop.transfer.SaveProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -16,19 +20,45 @@ import javax.validation.Valid;
 public class ProductController {
 
     private final ProductService productService;
-@Autowired
+
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-@PostMapping
-    public ResponseEntity<Product>createProduct(@Valid @RequestBody SaveProductRequest request){
+
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody SaveProductRequest request) {
         Product product = productService.createProduct(request);
 
-        return new ResponseEntity<>(product , HttpStatus.CREATED);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Product>updateProduct(@PathVariable long id ,@Valid @RequestBody SaveProductRequest request){
+    public ResponseEntity<Product> updateProduct(@PathVariable long id, @Valid @RequestBody SaveProductRequest request) {
         Product product = productService.updateProduct(id, request);
-        return new ResponseEntity<>(product , HttpStatus.OK);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id")
+    public ResponseEntity<Product> getProduct(@PathVariable long id) {
+        Product product = productService.getProduct(id);
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
+
+    }
+    @GetMapping
+    public ResponseEntity<Page<Product>>getProducts(@Valid GetProductsRequest request,Pageable pageable){
+//@RequestParam(required = false,defaultValue = "Phone")String partialName
+//@RequestParam(required = false,defaultValue = "Phone")int minQuantity
+ Page<Product> products = productService.getProducts(request,pageable);
+      return new ResponseEntity<>(products,HttpStatus.OK);
+   }
+
+//    @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")annotation use to be used before  @DeteleMappingfor ex. and  all above
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deleteProduct(@PathVariable long id){
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 }
