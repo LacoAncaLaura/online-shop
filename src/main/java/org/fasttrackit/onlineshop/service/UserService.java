@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fasttrackit.onlineshop.domain.User;
 import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.persistance.UserRepository;
-import org.fasttrackit.onlineshop.transfer.CreateUserRequest;
+import org.fasttrackit.onlineshop.transfer.user.CreateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

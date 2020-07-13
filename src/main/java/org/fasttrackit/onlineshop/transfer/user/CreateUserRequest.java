@@ -1,4 +1,4 @@
-package org.fasttrackit.onlineshop.transfer;
+package org.fasttrackit.onlineshop.transfer.user;
 
 import org.fasttrackit.onlineshop.domain.UserRole;
 

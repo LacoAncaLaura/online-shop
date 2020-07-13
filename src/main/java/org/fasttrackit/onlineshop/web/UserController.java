@@ -1,9 +1,8 @@
-package org.fasttrackit.onlineshop;
+package org.fasttrackit.onlineshop.web;
 
-import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.domain.User;
 import org.fasttrackit.onlineshop.service.UserService;
-import org.fasttrackit.onlineshop.transfer.CreateUserRequest;
+import org.fasttrackit.onlineshop.transfer.user.CreateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package org.fasttrackit.onlineshop.transfer;
+package org.fasttrackit.onlineshop.transfer.product;
 //Data Transfer Object (DTO)
 public class GetProductsRequest {
     private String partialName;
