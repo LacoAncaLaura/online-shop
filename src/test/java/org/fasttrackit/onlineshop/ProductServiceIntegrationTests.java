@@ -3,6 +3,7 @@ package org.fasttrackit.onlineshop;
 import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.service.ProductService;
+import org.fasttrackit.onlineshop.steps.ProductTestSteps;
 import org.fasttrackit.onlineshop.transfer.product.SaveProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintViolationException;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,27 +22,14 @@ class ProductServiceIntegrationTests {
     //  Field injection
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private ProductTestSteps productTestSteps;
 
     @Test
     void createProduct_whenValidRequest_thenReturnCreatedProduct() {
-        createProduct();
+        productTestSteps.createProduct();
     }
 
-    private Product createProduct() {
-        SaveProductRequest request = new SaveProductRequest();
-        request.setName("Phone");
-        request.setPrice(500);
-        request.setQuantity(1000);
-        Product product = productService.createProduct(request);
-//        assertions
-        assertThat(product, notNullValue());
-        assertThat(product.getId(), greaterThan(0L));
-        assertThat(product.getName(), is(request.getName()));
-        assertThat(product.getPrice(), is(request.getPrice()));
-        assertThat(product.getQuantity(), is(request.getQuantity()));
-        return product;
-    }
 
     @Test
     void createProduct_whenMissingMandatoryProperties_thenThrowException() {
@@ -57,7 +46,7 @@ class ProductServiceIntegrationTests {
     //    Negative test
     @Test
     void getProduct_whenExistingProduct_thenReturnProduct() {
-        Product product = createProduct();
+        Product product = productTestSteps.createProduct();
         Product response = productService.getProduct(product.getId());
 
         assertThat(response, notNullValue());
@@ -77,7 +66,7 @@ class ProductServiceIntegrationTests {
 
     @Test
     void updateProduct_whenValidRequest_thenUpdatingProduct() {
-        Product product = createProduct();
+        Product product = productTestSteps.createProduct();
         SaveProductRequest request = new SaveProductRequest();
         request.setName(product.getName() + "");
         request.setPrice(product.getPrice());
@@ -92,7 +81,7 @@ class ProductServiceIntegrationTests {
 
     @Test
     void deleteProduct_whenExistingProduct_theProductDoseNotExistAnymore() {
-        Product product = createProduct();
+        Product product = productTestSteps.createProduct();
         productService.deleteProduct(product.getId());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> productService.getProduct(0));
     }
