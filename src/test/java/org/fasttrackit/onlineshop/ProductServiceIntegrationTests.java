@@ -4,11 +4,14 @@ import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.service.ProductService;
 import org.fasttrackit.onlineshop.steps.ProductTestSteps;
+import org.fasttrackit.onlineshop.transfer.product.GetProductsRequest;
+import org.fasttrackit.onlineshop.transfer.product.ProductResponse;
 import org.fasttrackit.onlineshop.transfer.product.SaveProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.validation.ConstraintViolationException;
 
@@ -35,7 +38,7 @@ class ProductServiceIntegrationTests {
     void createProduct_whenMissingMandatoryProperties_thenThrowException() {
         SaveProductRequest request = new SaveProductRequest();
         try {
-            Product product = productService.createProduct(request);
+            ProductResponse product = productService.createProduct(request);
         } catch (Exception e) {
             assertThat("Unexpected exception throw", e instanceof ConstraintViolationException);
         }
@@ -59,6 +62,18 @@ class ProductServiceIntegrationTests {
 
     }
 
+//    @Test
+//    void getProduct_whenOneExistingProduct_thenReturnPageOfOneProduct() {
+//        Product product = productTestSteps.createProduct();
+//
+//    Page<ProductResponse> productsPage = productService.getProduct(new GetProductsRequest(), Page)
+//        assertThat(productsPage, notNullValue());
+//        assertThat(productsPage.getTotalElements(), is(1L));
+//        assertThat(productsPage.getContent().get(0).getId,is(product.getId()));
+//    }
+//
+//}
+
     @Test
     void getProduct_whenNonExistingProduct_thenThrowResourceNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> productService.getProduct(0));
@@ -71,7 +86,7 @@ class ProductServiceIntegrationTests {
         request.setName(product.getName() + "");
         request.setPrice(product.getPrice());
         request.setQuantity(product.getQuantity());
-        Product updateProduct = productService.updateProduct(product.getId(), request);
+        ProductResponse updateProduct = productService.updateProduct(product.getId(), request);
         assertThat(updateProduct, notNullValue());
         assertThat(updateProduct.getId(), is(product.getId()));
         assertThat(updateProduct.getName(), is(product.getName()));

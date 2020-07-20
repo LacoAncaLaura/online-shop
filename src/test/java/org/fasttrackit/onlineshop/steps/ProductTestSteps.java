@@ -2,6 +2,7 @@ package org.fasttrackit.onlineshop.steps;
 
 import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.service.ProductService;
+import org.fasttrackit.onlineshop.transfer.product.ProductResponse;
 import org.fasttrackit.onlineshop.transfer.product.SaveProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -17,12 +18,12 @@ public class ProductTestSteps {
     @Autowired
     private ProductService productService;
 
-   public Product createProduct() {
+   public ProductResponse createProduct() {
         SaveProductRequest request = new SaveProductRequest();
         request.setName("Phone");
         request.setPrice(500);
         request.setQuantity(1000);
-        Product product = productService.createProduct(request);
+       ProductResponse product = productService.createProduct(request);
 //        assertions
         assertThat(product, notNullValue());
         assertThat(product.getId(), greaterThan(0L));
