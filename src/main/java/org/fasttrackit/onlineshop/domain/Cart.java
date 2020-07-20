@@ -66,16 +66,11 @@ public class Cart {
 
         Cart cart = (Cart) o;
 
-        if (id != cart.id) return false;
-        if (user != null ? !user.equals(cart.user) : cart.user != null) return false;
-        return products != null ? products.equals(cart.products) : cart.products == null;
+        return id == cart.id;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (products != null ? products.hashCode() : 0);
-        return result;
+        return (int) (id ^ (id >>> 32));
     }
 }
