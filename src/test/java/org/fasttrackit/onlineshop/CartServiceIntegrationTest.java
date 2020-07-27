@@ -1,55 +1,60 @@
 package org.fasttrackit.onlineshop;
 
-import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.domain.User;
 import org.fasttrackit.onlineshop.service.CartService;
 import org.fasttrackit.onlineshop.steps.ProductTestSteps;
 import org.fasttrackit.onlineshop.steps.UserTestSteps;
 import org.fasttrackit.onlineshop.transfer.cart.AddProductsToCartRequest;
 import org.fasttrackit.onlineshop.transfer.cart.CartResponse;
+import org.fasttrackit.onlineshop.transfer.product.ProductResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
 
-@SpringBootTest
-public class CartServiceIntegrationTest {
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private UserTestSteps userTestSteps;
-    @Autowired
-    private ProductTestSteps productTestSteps;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
-    @Test
-    public void addProductsToCart_whenNewUser_thenCreateCartForUser() {
+    @SpringBootTest
+    @ActiveProfiles("test")
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+    public class CartServiceIntegrationTest {
 
-        User user = userTestSteps.createUser();
+        @Autowired
+        private CartService cartService;
 
-        Product product = productTestSteps.createProduct();
+        @Autowired
+        private UserTestSteps userTestSteps;
 
-        AddProductsToCartRequest request = new AddProductsToCartRequest();
-        request.setProductIds(Collections.singletonList(product.getId()));
+        @Autowired
+        private ProductTestSteps productTestSteps;
 
-        cartService.addProductsToCart(user.getId(), request);
+        @Test
+        public void addProductsToCart_whenNewUser_thenCreateCartForUser() {
+            User user = userTestSteps.createUser();
 
-        CartResponse cartResponse = cartService.getCart(user.getId());
+            ProductResponse product = productTestSteps.createProduct();
 
-        assertThat(cartResponse, notNullValue());
-        assertThat(cartResponse.getId(), is(user.getId()));
-        assertThat(cartResponse.getProducts(), notNullValue());
-        assertThat(cartResponse.getProducts(), hasSize(1));
-        assertThat(cartResponse.getProducts().get(0), notNullValue());
-        assertThat(cartResponse.getProducts().get(0).getId(), is(product.getId()));
-        assertThat(cartResponse.getProducts().get(0).getName(), is(product.getName()));
-        assertThat(cartResponse.getProducts().get(0).getPrice(), is(product.getPrice()));
-        assertThat(cartResponse.getProducts().get(0).getImageURL(), is(product.getImageUrl()));
+            AddProductsToCartRequest request = new AddProductsToCartRequest();
+            request.setProductIds(Collections.singletonList(product.getId()));
 
+            cartService.addProductsToCart(user.getId(), request);
+
+            CartResponse cartResponse = cartService.getCart(user.getId());
+
+            assertThat(cartResponse, notNullValue());
+            assertThat(cartResponse.getId(), is(user.getId()));
+            assertThat(cartResponse.getProducts(), notNullValue());
+            assertThat(cartResponse.getProducts(), hasSize(1));
+            assertThat(cartResponse.getProducts().get(0), notNullValue());
+            assertThat(cartResponse.getProducts().get(0).getId(), is(product.getId()));
+            assertThat(cartResponse.getProducts().get(0).getName(), is(product.getName()));
+            assertThat(cartResponse.getProducts().get(0).getPrice(), is(product.getPrice()));
+            assertThat(cartResponse.getProducts().get(0).getImageURL(), is(product.getImageUrl()));
+        }
     }
-}

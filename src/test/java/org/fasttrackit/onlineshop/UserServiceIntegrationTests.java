@@ -1,24 +1,26 @@
 package org.fasttrackit.onlineshop;
 
 import org.fasttrackit.onlineshop.domain.User;
-import org.fasttrackit.onlineshop.domain.UserRole;
 import org.fasttrackit.onlineshop.service.UserService;
 import org.fasttrackit.onlineshop.steps.UserTestSteps;
-import org.fasttrackit.onlineshop.transfer.user.CreateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserServiceIntegrationTests {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserTestSteps userTestSteps;
 
